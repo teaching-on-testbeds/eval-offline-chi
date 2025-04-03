@@ -33,11 +33,10 @@ For this experiment, we will provision one virtual machine on KVM@TACC.
 
 ## Open this experiment on Trovi
 
+When you are ready to begin, you will continue with the next step, in which you bring up and configure a VM instance! To begin this step, open this experiment on Trovi:
 
-At the beginning of your GPU lease time, you will continue with the next step, in which you bring up and configure a VM instance! To begin this step, open this experiment on Trovi:
-
-* Use this link: [Offline evaluation of ML systems](https://chameleoncloud.org/experiment/share/) on Trovi
-* Then, click “Launch on Chameleon”. This will start a new Jupyter server for you, with the experiment materials already in it, including the notebok to bring up the bare metal server.
+* Use this link: [Offline evaluation of ML systems](https://chameleoncloud.org/experiment/share/3785c5f5-4c98-4dae-b66d-9e693544a269) on Trovi
+* Then, click “Launch on Chameleon”. This will start a new Jupyter server for you, with the experiment materials already in it, including the notebok to bring up the VM instance.
 
 
 :::

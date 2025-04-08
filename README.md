@@ -6,7 +6,7 @@ In this tutorial, we will practice selected techniques for evaluating machine le
 * [Online evaluation of ML systems](https://teaching-on-testbeds.github.io/eval-online-chi/)
 * [Evaluation of ML systems by closing the feedback loop](https://teaching-on-testbeds.github.io/eval-loop-chi/)
 
-In this particular section, we will practice evaluation in the *offline* testing stage - when it is not yet serving real users.
+In this particular section, we will practice evaluation in the *offline* testing stage - when the system is not yet serving real users.
 
 Follow along at [Offline evaluation of ML systems](https://teaching-on-testbeds.github.io/eval-offline-chi/).
 

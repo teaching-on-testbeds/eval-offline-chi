@@ -31,6 +31,13 @@ http://127.0.0.1:8888/lab?token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 Paste this into a browser tab, but in place of 127.0.0.1, substitute the floating IP assigned to your instance, to open the Jupyter notebook interface that is running *on your compute instance*.
 
+Open a terminal inside this Jupyter container, and run
+
+```bash
+# run in Jupyter container on node-eval-offline
+pip install grad-cam pytest
+```
+
 Then, in the file browser on the left side, open the "work" directory and then click on the `eval_offline.ipynb` notebook to continue.
 
 :::

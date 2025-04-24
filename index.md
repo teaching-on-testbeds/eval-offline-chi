@@ -343,6 +343,10 @@ current_index = 0
 with torch.no_grad():
     for images, labels in test_loader:
         batch_size = labels.size(0)
+
+        images = images.to(device)
+        labels = labels.to(device)
+
         outputs = model(images)
         _, predicted = torch.max(outputs, 1)
 
@@ -726,6 +730,7 @@ def predict(model, image, device=torch.device('cuda' if torch.cuda.is_available(
     model.eval()
     image_tensor = val_test_transform(image).unsqueeze(0).to(device)
     with torch.no_grad():
+        image_tensor = image_tensor.to(device)
         output = model(image_tensor)
         return output.argmax(dim=1).item()
 

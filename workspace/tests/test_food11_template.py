@@ -26,7 +26,7 @@ def compose_template(food_path, bg_path=None, extra_path=None):
     return bg.convert("RGB")
 
 # Require 80% accuracy
-def test_template_permutations(model, predict):
+def test_template_permutations(model, device, predict):
     food_classes = os.listdir(os.path.join(TEMPLATE_DIR, "food"))
     backgrounds = os.listdir(os.path.join(TEMPLATE_DIR, "background"))
     extras = os.listdir(os.path.join(TEMPLATE_DIR, "extras"))
@@ -52,7 +52,7 @@ def test_template_permutations(model, predict):
                     bg_path=os.path.join(TEMPLATE_DIR, "background", bg),
                     extra_path=os.path.join(TEMPLATE_DIR, "extras", extra)
                 )
-                pred = predict(model, img)
+                pred = predict(model, device, img)
                 if pred == class_index:
                     passed_tests += 1
                 else:

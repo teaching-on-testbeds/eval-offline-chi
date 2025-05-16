@@ -16,18 +16,23 @@ def transform():
 
 @pytest.fixture(scope="session")
 def predict(transform):
-    def predict_image(model, image):
+    def predict_image(model, device, image):
         model.eval()
         with torch.no_grad():
-            input_tensor = transform(image).unsqueeze(0)
+            input_tensor = transform(image).unsqueeze(0).to(device)
             output = model(input_tensor)
             return output.argmax(dim=1).item()
     return predict_image
 
 @pytest.fixture(scope="session")
-def model():
-    model_path = "models/food11.pth"  
+def device():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    return device
+
+
+@pytest.fixture(scope="session")
+def model(device):
+    model_path = "models/food11.pth"  
     model = torch.load(model_path, map_location=device, weights_only=False)
     _ = model.eval()  
     return model
@@ -40,7 +45,7 @@ def test_data(transform):
     return DataLoader(dataset, batch_size=32, shuffle=False)
 
 @pytest.fixture(scope="session")
-def predictions(model, test_data):
+def predictions(model, device, test_data):
     dataset_size = len(test_data.dataset)
     all_predictions = np.empty(dataset_size, dtype=np.int64)
     all_labels = np.empty(dataset_size, dtype=np.int64)
@@ -49,6 +54,8 @@ def predictions(model, test_data):
     with torch.no_grad():
         for images, labels in test_data:
             batch_size = labels.size(0)
+            images = images.to(device)
+            labels = labels.to(device)
             outputs = model(images)
             _, predicted = torch.max(outputs, 1)
             all_predictions[current_index:current_index + batch_size] = predicted.cpu().numpy()

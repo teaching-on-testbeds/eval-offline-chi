@@ -24,7 +24,7 @@ Let's start by loading our trained model and our test data.
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 import os
 import torch
 from torch.utils.data import DataLoader
@@ -41,7 +41,7 @@ from PIL import Image
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 model_path = "models/food11.pth"  
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = torch.load(model_path, map_location=device, weights_only=False)
@@ -53,7 +53,7 @@ _ = model.eval()
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 food_11_data_dir = os.getenv("FOOD11_DATA_DIR", "Food-11")
 val_test_transform = transforms.Compose([
     transforms.Resize((224, 224)),
@@ -91,7 +91,7 @@ To start, let's get the predictions of the model on the held-out test set:
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 dataset_size = len(test_loader.dataset)
 all_predictions = np.empty(dataset_size, dtype=np.int64)
 all_labels = np.empty(dataset_size, dtype=np.int64)
@@ -124,7 +124,7 @@ We can use these to compute the overall accuracy:
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 overall_accuracy = (all_predictions == all_labels).sum() / all_labels.shape[0] * 100
 print(f'Overall Accuracy: {overall_accuracy:.2f}%')
 
@@ -139,7 +139,7 @@ We can also compute the per-class accuracy. It would be concerning if our classi
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 classes = np.array(["Bread", "Dairy product", "Dessert", "Egg", "Fried food",
     "Meat", "Noodles/Pasta", "Rice", "Seafood", "Soup", "Vegetable/Fruit"])
 num_classes = classes.shape[0]
@@ -150,7 +150,7 @@ num_classes = classes.shape[0]
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 per_class_correct = np.zeros(num_classes, dtype=np.int32)
 per_class_total = np.zeros(num_classes, dtype=np.int32)
 
@@ -176,7 +176,7 @@ And, we can use a confusion matrix to see which classes are most often confused 
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 conf_matrix = np.zeros((num_classes, num_classes), dtype=np.int32)
 for true_label, pred_label in zip(all_labels, all_predictions):
     conf_matrix[true_label, pred_label] += 1
@@ -210,7 +210,7 @@ Let's use our human judgement to better understand some of these errors.
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 
 # Get random sample of Dessert and Dairy product samples that are confused for one another
 dessert_index = np.where(classes == "Dessert")[0][0]
@@ -229,7 +229,7 @@ sample_indices = np.array([404, 927, 496, 435, 667])
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 
 sample_images = []
 start_idx = 0
@@ -249,7 +249,7 @@ for images, _ in test_loader:
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 mean = torch.tensor([0.485, 0.456, 0.406])
 std = torch.tensor([0.229, 0.224, 0.225])
 # Visualize those samples (undo the normalization first)
@@ -303,7 +303,7 @@ Let's try using GradCAM to highlight the parts of the image that are most influe
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 from pytorch_grad_cam import GradCAM
 from pytorch_grad_cam.utils.image import show_cam_on_image
 from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
@@ -318,7 +318,7 @@ cam = GradCAM(model=model, target_layers=[target_layer])
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 
 mean = torch.tensor([0.485, 0.456, 0.406])
 std = torch.tensor([0.229, 0.224, 0.225])
@@ -382,7 +382,7 @@ Let's look at these now.
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 
 TEMPLATE_DIR = "templates"
 
@@ -436,7 +436,7 @@ and, here is a function that can compose an image out of a background, a food it
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 
 def compose_image(food_path, bg_path=None, extra_path=None):
 
@@ -491,7 +491,7 @@ We can also try:
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 imgs = {
     'original_image': compose_image('templates/food/09/001.png'),
     'composed_bg1_extra1': compose_image('templates/food/09/001.png', 'templates/background/001.jpg', 'templates/extras/spoon.png'),
@@ -514,7 +514,7 @@ and, let's look at these examples:
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 fig, axes = plt.subplots(1, 5, figsize=(14, 3))
 
 for ax, key in zip(axes, imgs.keys()):
@@ -536,7 +536,7 @@ We can get the predictions of the model for these samples, as well as the GradCA
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 
 def predict(model, image, device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')):
     model.eval()
@@ -552,7 +552,7 @@ def predict(model, image, device=torch.device('cuda' if torch.cuda.is_available(
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 
 fig, axes = plt.subplots(2, 5, figsize=(14, 6))
 
@@ -587,7 +587,7 @@ That seemed OK - but let's try it for a different combination of food item, back
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 
 imgs = {
     'original_image': compose_image('templates/food/10/001.png'),
@@ -608,7 +608,7 @@ and repeat the visualization:
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 
 fig, axes = plt.subplots(2, 5, figsize=(14, 6))
 
@@ -657,7 +657,7 @@ For example, our model is reasonably accurate on "Dessert" samples. However, loo
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 dessert_index = np.where(classes == "Dessert")[0][0]
 dessert_images = []
 
@@ -696,7 +696,7 @@ To evaluate whether our model is similarly effective at classifying food items f
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 
 dessert_dir = "indian_dessert"
 dessert_images = random.sample(os.listdir(dessert_dir), 5)
@@ -748,7 +748,7 @@ All of the photos in the "cake_looks_like" directory are actually photos of cake
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 cake_dir = "cake_looks_like"
 cake_images = random.sample(os.listdir(cake_dir), 5)
 fig, axes = plt.subplots(1, 5, figsize=(10, 3))
@@ -804,7 +804,7 @@ Once we have defined these tests, we can run our test suite with:
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 !pytest --verbose --tb=no tests/
 ```
 :::
@@ -827,7 +827,7 @@ We have only scratched the surface with `pytest`. For example, we can re-run the
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 !pytest --verbose --lf --tb=no tests/
 ```
 :::
@@ -840,7 +840,7 @@ or we can run only the tests from a particular test file:
 
 ::: {.cell .code}
 ```python
-# runs in jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 !pytest --verbose --tb=no tests/test_food11_test_cases.py
 ```
 :::

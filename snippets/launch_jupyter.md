@@ -34,7 +34,7 @@ Paste this into a browser tab, but in place of `localhost`, substitute the float
 Open a terminal inside this Jupyter container, and run
 
 ```bash
-# run in Jupyter container on node-eval-offline
+# runs on Jupyter container on node-eval-offline
 pip install grad-cam pytest
 ```
 

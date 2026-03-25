@@ -325,6 +325,7 @@ from PIL import Image
 model_path = "models/food11.pth"  
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = torch.load(model_path, map_location=device, weights_only=False)
+model = model.to(device)
 _ = model.eval()  
 ```
 
@@ -1027,7 +1028,6 @@ You can learn more about its capabilities in its [documentation](https://docs.py
 ---
 
 When you are finished with this section - save and then download the fully executed notebook from the Jupyter container environment for later reference. (Note: because it is an executable file, and you are downloading it from a site that is not secured with HTTPS, you may have to explicitly confirm the download in some browsers.)
-
 
 
 

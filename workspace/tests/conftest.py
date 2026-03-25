@@ -34,6 +34,7 @@ def device():
 def model(device):
     model_path = "models/food11.pth"  
     model = torch.load(model_path, map_location=device, weights_only=False)
+    model = model.to(device)
     _ = model.eval()  
     return model
 
